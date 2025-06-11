@@ -11,5 +11,10 @@ def read_data():
     return df
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     df = read_data()
+
+    st.title("Dados operacionais de maquinas industriais")
+
+    with st.expander("Exibir tabela de dados"):
+        st.dataframe(df)
