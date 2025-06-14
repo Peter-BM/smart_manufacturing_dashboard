@@ -53,6 +53,28 @@ def display_machine_feature_graph(df, query, feature, feature_label):
         st.plotly_chart(fig, use_container_width=True)
 
 
+def display_machine_status_chart(df, query):
+    filtered_df = df.query(query)
+
+    if filtered_df.empty:
+        st.warning("Nenhum dado encontrado para os filtros selecionados.")
+        return
+
+    grouped = (
+        filtered_df.groupby(["date", "machine_status"]).size().reset_index(name="count")
+    )
+
+    fig = px.bar(
+        grouped,
+        x="date",
+        y="count",
+        color="machine_status",
+        barmode="stack",
+        labels={"count": "Ocorrências", "date": "Data", "machine_status": "Status"},
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+
 if __name__ == "__main__":
     df = read_data()
 
@@ -102,7 +124,7 @@ if __name__ == "__main__":
     (machine == @selected_machine)
     """
 
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
         [
             "Vibração",
             "Temperatura",
@@ -110,6 +132,7 @@ if __name__ == "__main__":
             "Pressão",
             "Umidade",
             "Vida útil restante",
+            "Status da Máquina",
         ]
     )
 
@@ -151,3 +174,7 @@ if __name__ == "__main__":
             feature="predicted_remaining_life",
             feature_label="Vida útil restante",
         )
+
+    with tab7:
+        st.subheader(f"Status da máquina {selected_machine}")
+        display_machine_status_chart(df, filter)
