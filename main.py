@@ -96,7 +96,7 @@ if __name__ == "__main__":
     (machine == @selected_machine)
     """
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Vibração", "Temperatura", "Consumo de energia", "4", "5"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Vibração", "Temperatura", "Consumo de energia", "Pressão", "Umidade"])
 
     with tab1:
         st.subheader(f"Vibração da máquina {selected_machine}")
@@ -105,3 +105,15 @@ if __name__ == "__main__":
     with tab2:
         st.subheader(f"Temperatura da máquina {selected_machine}")
         display_machine_feature_graph(df, filter, feature="temperature", feature_label="Temperatura")
+
+    with tab3:
+        st.subheader(f"Consumo de energia da máquina {selected_machine}")
+        display_machine_feature_graph(df, filter, feature="energy_consumption", feature_label="Consumo de energia")
+
+    with tab4:
+        st.subheader(f"Pressão da máquina {selected_machine}")
+        display_machine_feature_graph(df, filter, feature="pressure", feature_label="Pressão")
+
+    with tab5:
+        st.subheader(f"Umidade da máquina {selected_machine}")
+        display_machine_feature_graph(df, filter, feature="humidity", feature_label="Umidade")
