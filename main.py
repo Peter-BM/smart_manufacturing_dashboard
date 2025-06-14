@@ -40,8 +40,14 @@ def display_machine_feature_graph(df, query, feature, feature_label):
     )
 
     with col1:
-        st.metric(f"Menor {feature_label.lower()} no período:", value=filtered_df[feature].min())
-        st.metric(f"Maior {feature_label.lower()} no período:", value=filtered_df[feature].max())
+        st.metric(
+            f"Menor {feature_label.lower()} no período:",
+            value=filtered_df[feature].min(),
+        )
+        st.metric(
+            f"Maior {feature_label.lower()} no período:",
+            value=filtered_df[feature].max(),
+        )
 
     with col2:
         st.plotly_chart(fig, use_container_width=True)
@@ -96,24 +102,36 @@ if __name__ == "__main__":
     (machine == @selected_machine)
     """
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Vibração", "Temperatura", "Consumo de energia", "Pressão", "Umidade"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(
+        ["Vibração", "Temperatura", "Consumo de energia", "Pressão", "Umidade"]
+    )
 
     with tab1:
         st.subheader(f"Vibração da máquina {selected_machine}")
-        display_machine_feature_graph(df, filter, feature="vibration", feature_label="Vibração")
+        display_machine_feature_graph(
+            df, filter, feature="vibration", feature_label="Vibração"
+        )
 
     with tab2:
         st.subheader(f"Temperatura da máquina {selected_machine}")
-        display_machine_feature_graph(df, filter, feature="temperature", feature_label="Temperatura")
+        display_machine_feature_graph(
+            df, filter, feature="temperature", feature_label="Temperatura"
+        )
 
     with tab3:
         st.subheader(f"Consumo de energia da máquina {selected_machine}")
-        display_machine_feature_graph(df, filter, feature="energy_consumption", feature_label="Consumo de energia")
+        display_machine_feature_graph(
+            df, filter, feature="energy_consumption", feature_label="Consumo de energia"
+        )
 
     with tab4:
         st.subheader(f"Pressão da máquina {selected_machine}")
-        display_machine_feature_graph(df, filter, feature="pressure", feature_label="Pressão")
+        display_machine_feature_graph(
+            df, filter, feature="pressure", feature_label="Pressão"
+        )
 
     with tab5:
         st.subheader(f"Umidade da máquina {selected_machine}")
-        display_machine_feature_graph(df, filter, feature="humidity", feature_label="Umidade")
+        display_machine_feature_graph(
+            df, filter, feature="humidity", feature_label="Umidade"
+        )
