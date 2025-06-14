@@ -47,6 +47,30 @@ def display_machine_vibration_graph(df, query):
         st.plotly_chart(fig, use_container_width=True)
 
 
+def display_machine_temperature_graph(df, query):
+    col1, col2 = st.columns(2)
+
+    filtered_df = df.query(query)
+
+    if filtered_df.empty:
+        st.warning("Nenhum dado encontrado para os filtros selecionados.")
+        return
+
+    fig = px.line(
+        filtered_df,
+        x="timestamp",
+        y="temperature",
+        labels={"temperature": "Temperatura", "timestamp": "Data e Hora"},
+    )
+
+    with col1:
+        st.metric("Menor temperatura no periodo:", value=filtered_df['temperature'].min())
+        st.metric("Maior temperatura no periodo:", value=filtered_df['temperature'].max())
+
+    with col2:
+        st.plotly_chart(fig, use_container_width=True)
+
+
 if __name__ == "__main__":
     df = read_data()
 
@@ -100,4 +124,8 @@ if __name__ == "__main__":
 
     with tab1:
         st.subheader(f"Vibração da máquina {selected_machine}")
-        display_machine_vibration_graph(df, filter, selected_machine)
+        display_machine_vibration_graph(df, filter)
+
+    with tab2:
+        st.subheader(f"Temperatura da máquina {selected_machine}")
+        display_machine_temperature_graph(df, filter)
