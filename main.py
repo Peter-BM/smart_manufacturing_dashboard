@@ -23,7 +23,7 @@ def format_quarter(quarter):
     return quarters[quarter]
 
 
-def display_machine_vibration_graph(df, query):
+def display_machine_feature_graph(df, query, feature, feature_label):
     col1, col2 = st.columns(2)
 
     filtered_df = df.query(query)
@@ -35,37 +35,13 @@ def display_machine_vibration_graph(df, query):
     fig = px.line(
         filtered_df,
         x="timestamp",
-        y="vibration",
-        labels={"vibration": "Vibração", "timestamp": "Data e Hora"},
+        y=feature,
+        labels={feature: feature_label, "timestamp": "Data e Hora"},
     )
 
     with col1:
-        st.metric("Menor vibração no periodo:", value=filtered_df['vibration'].min())
-        st.metric("Maior vibração no periodo:", value=filtered_df['vibration'].max())
-
-    with col2:
-        st.plotly_chart(fig, use_container_width=True)
-
-
-def display_machine_temperature_graph(df, query):
-    col1, col2 = st.columns(2)
-
-    filtered_df = df.query(query)
-
-    if filtered_df.empty:
-        st.warning("Nenhum dado encontrado para os filtros selecionados.")
-        return
-
-    fig = px.line(
-        filtered_df,
-        x="timestamp",
-        y="temperature",
-        labels={"temperature": "Temperatura", "timestamp": "Data e Hora"},
-    )
-
-    with col1:
-        st.metric("Menor temperatura no periodo:", value=filtered_df['temperature'].min())
-        st.metric("Maior temperatura no periodo:", value=filtered_df['temperature'].max())
+        st.metric(f"Menor {feature_label.lower()} no período:", value=filtered_df[feature].min())
+        st.metric(f"Maior {feature_label.lower()} no período:", value=filtered_df[feature].max())
 
     with col2:
         st.plotly_chart(fig, use_container_width=True)
@@ -124,8 +100,8 @@ if __name__ == "__main__":
 
     with tab1:
         st.subheader(f"Vibração da máquina {selected_machine}")
-        display_machine_vibration_graph(df, filter)
+        display_machine_feature_graph(df, filter, feature="vibration", feature_label="Vibração")
 
     with tab2:
         st.subheader(f"Temperatura da máquina {selected_machine}")
-        display_machine_temperature_graph(df, filter)
+        display_machine_feature_graph(df, filter, feature="temperature", feature_label="Temperatura")
