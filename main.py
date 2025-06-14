@@ -23,7 +23,9 @@ def format_quarter(quarter):
     return quarters[quarter]
 
 
-def display_machine_vibration_graph(df, query, selected_machine):
+def display_machine_vibration_graph(df, query):
+    col1, col2 = st.columns(2)
+
     filtered_df = df.query(query)
 
     if filtered_df.empty:
@@ -34,10 +36,15 @@ def display_machine_vibration_graph(df, query, selected_machine):
         filtered_df,
         x="timestamp",
         y="vibration",
-        title=f"Vibração da máquina {selected_machine}",
         labels={"vibration": "Vibração", "timestamp": "Data e Hora"},
     )
-    st.plotly_chart(fig, use_container_width=True)
+
+    with col1:
+        st.metric("Menor vibração no periodo:", value=filtered_df['vibration'].min())
+        st.metric("Maior vibração no periodo:", value=filtered_df['vibration'].max())
+
+    with col2:
+        st.plotly_chart(fig, use_container_width=True)
 
 
 if __name__ == "__main__":
@@ -89,4 +96,8 @@ if __name__ == "__main__":
     (machine == @selected_machine)
     """
 
-    display_machine_vibration_graph(df, filter, selected_machine)
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Vibração", "Temperatura", "Consumo de energia", "4", "5"])
+
+    with tab1:
+        st.subheader(f"Vibração da máquina {selected_machine}")
+        display_machine_vibration_graph(df, filter, selected_machine)
