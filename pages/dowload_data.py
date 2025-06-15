@@ -3,6 +3,7 @@ import pandas as pd
 
 PATH = "data/smart_manufacturing_data_cleaned.csv"
 
+
 @st.cache_data
 def read_data():
     df = pd.read_csv(PATH)
@@ -10,16 +11,22 @@ def read_data():
     df["date"] = df["timestamp"].dt.date
     return df
 
+
 @st.cache_data
 def csv_convert(df):
-    return df.to_csv(index=False).encode('utf-8')
+    return df.to_csv(index=False).encode("utf-8")
+
 
 st.title("Baixar Dados Operacionais")
 
 df = read_data()
 
 with st.expander("Selecionar colunas"):
-    colunas = st.multiselect("Escolha as colunas que deseja baixar:", list(df.columns), default=list(df.columns))
+    colunas = st.multiselect(
+        "Escolha as colunas que deseja baixar:",
+        list(df.columns),
+        default=list(df.columns),
+    )
 
 filtered_df = df[colunas]
 
@@ -30,5 +37,5 @@ st.download_button(
     label="Baixar CSV",
     data=csv_convert(filtered_df),
     file_name="dados_operacionais.csv",
-    mime="text/csv"
+    mime="text/csv",
 )
